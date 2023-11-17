@@ -1,0 +1,28 @@
+<nav class="navbar navbar-expand-sm navbar-dark" aria-label="Eighth navbar example" style="background-color: #273746">
+    <div class="container">
+      <a class="navbar-brand" href="{% url 'recruiterHome' %}">Recruiter Page</a>
+      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarsExample07" aria-controls="navbarsExample07" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <div class="topnav-right">
+        <div class="collapse navbar-collapse" id="navbarsExample07">
+            <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+            <li class="nav-item">
+                <a class="nav-link active" aria-current="page" href="{% url 'recruiterHome' %}">Home</a>
+            </li>
+            <li class="nav-item dropdown">
+                <a class="nav-link dropdown-toggle" href="#" id="dropdown07" data-bs-toggle="dropdown" aria-expanded="false">Manage</a>
+                <ul class="dropdown-menu" aria-labelledby="dropdown07">
+                <li><a class="dropdown-item" href="{% url 'viewJobs' %}">View Jobs</a></li>
+                <li><a class="dropdown-item" href="{% url 'viewApplicants' %}">View All Applicants</a></li>
+                <li><a class="dropdown-item" href="#">Calendar</a></li>
+                </ul>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="{% url 'logout' %}">Logout</a>
+            </li>
+            </ul>
+        </div>
+      </div>
+    </div>
+  </nav>

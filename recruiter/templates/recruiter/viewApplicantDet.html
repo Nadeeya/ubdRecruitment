@@ -1,0 +1,322 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    {% load static %}
+
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    {% load bootstrap5 %}
+    {% bootstrap_css %}
+    {% bootstrap_javascript %}
+    <!-- Style -->
+    <link rel="icon" type="image/x-icon" href="{% static 'images/contentDeco/ubd-favicon.ico' %}"> 
+    <link rel="stylesheet" href="{% static 'css/admin.css' %}">
+    <link rel="stylesheet" href="{% static 'css/style.css' %}">
+
+    <title>Application Form</title>
+</head>
+<body style="background: #f0f2f5;">
+    {% include 'recruiter/constant/navbar.html' %}
+    <br>
+    
+    <div class="container">
+        <a href="{% url 'viewApplicantsJob' applicant.job_id %}"><button type="button" class="btn btn-info">List of Applicants</button></a>
+        
+        <div class="appbox">
+            <div id="form-details">
+            <div id="section">
+                <h1 style="text-align: center;">Application</h1>
+                  <div style="float:right">
+                    <a href="{% url 'viewNextApplicants' job_id=applicant.job_id current_applicant_id=applicant.id %}"><button type="button" class="btn btn-info">Next Applicant</button></a>
+                </div>
+                <div style="float:left;">
+                    <a href="{% url 'viewPreviousApplicants' job_id=applicant.job_id current_applicant_id=applicant.id %}"><button type="button" class="btn btn-info">Previous Applicant</button></a>
+                </div>
+                <br>
+                <br>
+                <br>
+
+                <div>
+                    <p><strong>Application id:</strong> {{applicant.id}}</p>
+                    <p><strong>Applicant's name: </strong>{{applicant.user.first_name}} {{applicant.user.last_name}}</p>
+                    <p><strong>Date Submitted: </strong>{{applicant.date_added}}</p>
+                    <p><strong>Application status: </strong>{{applicant.applicant_status}}</p>
+                </div>
+              
+                <hr/>
+                <div class="row">
+                    <div class="col-md-3"><strong>Email</strong></div>
+                    <div class="col-md-9">{{applicant.user.email}}</div><br><br>
+                </div>
+                <div class="row">
+                    <div class="col-md-3"><strong>Area of Specialisation applied for </strong></div>
+                    <div class="col-md-9">{{applicant.job.name}}</div><br><br>
+                </div>
+                <div class="row">
+                    <div class="col-md-3"><strong>Post Applied for </strong></div>
+                    <div class="col-md-9">{{applicant.postApplied}}</div><br><br>
+                </div>
+                <div class="row">
+                    <div class="col-md-3"><strong>Date of any previous application</strong></div>
+                    <div class="col-md-9">{{applicant.datePrev}}</div><br><br>
+                </div>
+                <div class="row">
+                    <div class="col-md-3"><strong>Source obtained regarding vacant post</strong></div>
+                    <div class="col-md-9">{{applicant.source}}</div><br><br>
+                </div><hr/>
+            </div>
+
+
+            <div id="section">
+                <h3>Personal Particulars</h3><br>
+                <div class="row">
+                    <div class="col-md-3"><strong>Fullname</strong></div>
+                    <div class="col-md-9">{{applicant.user.first_name}} {{applicant.user.last_name}}</div><br><br>
+                </div>
+                <div class="row">
+                    <div class="col-md-3"><strong>Gender</strong></div>
+                    <div class="col-md-9">{{applicant.profile.gender}}</div><br><br>
+                </div>
+                <div class="row">
+                    <div class="col-md-3"><strong>Place of Birth </strong></div>
+                    <div class="col-md-9">{{applicant.profile.dob}}</div><br><br>
+                </div>
+                <div class="row">
+                    <div class="col-md-3"><strong>Place of Birth</strong></div>
+                    <div class="col-md-9">{{applicant.profile.pob}}</div><br><br>
+                </div>
+                <div class="row">
+                    <div class="col-md-3"><strong>Nationality</strong></div>
+                    <div class="col-md-9">{{applicant.profile.nationality}}</div><br><br>
+                </div>
+                <div class="row">
+                    <div class="col-md-3"><strong>Citizenship</strong></div>
+                    <div class="col-md-9">{{applicant.profile.citizenship}}</div><br><br>
+                </div>
+                <div class="row">
+                    <div class="col-md-3"><strong>Country of Domicile</strong></div>
+                    <div class="col-md-9">{{applicant.profile.cod}}</div><br><br>
+                </div>
+                <div class="row">
+                    <div class="col-md-3"><strong>Marital Status</strong></div>
+                    <div class="col-md-9">{{applicant.profile.maritalStat}}</div><br><br>
+                </div>
+                <div class="row">
+                    <div class="col-md-3"><strong>Religion</strong></div>
+                    <div class="col-md-9">{{applicant.profile.religion}}</div><br><br>
+                </div>
+                <div class="row">
+                    <div class="col-md-3"><strong> Card / Passport No.</strong></div>
+                    <div class="col-md-9">{{applicant.profile.icPass}}</div><br><br>
+                </div>
+                <div class="row">
+                    <div class="col-md-3"><strong>Address </strong></div>
+                    <div class="col-md-9">{{applicant.profile.address}}</div><br><br>
+                </div>
+                <div class="row">
+                    <div class="col-md-3"><strong> Tel No. </strong></div>
+                    <div class="col-md-9">{{applicant.profile.phoneNo}}</div><br><br>
+                </div>
+                <div class="row">
+                    <div class="col-md-3"><strong> Email </strong></div>
+                    <div class="col-md-9">{{applicant.user.email}}</div><br><br>
+                </div><hr/>
+            </div>
+
+
+            <div id="section">
+                <h3>Present Employment</h3><br>
+                <div class="row">
+                    <div class="col-md-3"><strong> Present Post </strong></div>
+                    <div class="col-md-9">{{applicant.presentEmployment.Present_post}}</div><br><br>
+                </div>
+                <div class="row">
+                    <div class="col-md-3"><strong> Present Employer </strong></div>
+                    <div class="col-md-9">{{applicant.presentEmployment.Present_Employer}}</div><br><br>
+                </div>
+                <div class="row">
+                    <div class="col-md-3"><strong> Current Duties </strong></div>
+                    <div class="col-md-9">{{applicant.presentEmployment.Current_dutties}}</div><br><br>
+                </div>
+                <div class="row">
+                    <div class="col-md-3"><strong>Date of Appointment in current post </strong></div>
+                    <div class="col-md-9">{{applicant.presentEmployment.Current_post_appointment}}</div><br><br>
+                </div>
+                <div class="row">
+                    <div class="col-md-3"><strong>Basic Salary (currency depends on current employment)</strong></div>
+                    <div class="col-md-9">{{applicant.presentEmployment.Basic_salary}}</div><br><br>
+                </div>
+                <div class="row">
+                    <div class="col-md-3"><strong> Emoluments and Allowance </strong></div>
+                    <div class="col-md-9">{{applicant.presentEmployment.Other_Emoluments_Allowance}}</div><br><br>
+                </div>
+                <div class="row">
+                    <div class="col-md-3"><strong> Income Tax Deduction (%) </strong></div>
+                    <div class="col-md-9">{{applicant.presentEmployment.Income_Tax_Deduction}}</div><br><br>
+                </div>
+                <div class="row">
+                    <div class="col-md-3"><strong>Period of Notice before Reporting for Duty in Brunei </strong></div>
+                    <div class="col-md-9">{{applicant.presentEmployment.Period_of_Notice}}</div><br><br>
+                </div><hr/>
+            </div>
+
+
+            <div id="section">
+                <h3>Academic Record</h3><br>
+                <div class="row">
+                    <div class="col-md-12">{{applicant.academicRec}}</div><br><br>
+                </div><hr/>
+
+                <h3>Membership and Fellowship</h3><br>
+                <div class="row">
+                    <div class="col-md-12">{{applicant.membershipFellowship}}</div><br><br>
+                </div><hr/>
+
+                <h3>Employment Record</h3><br>
+                <div class="row">
+                    <div class="col-md-3"><strong>Employment Record in Higher Education </strong></div>
+                    <div class="col-md-9">{{applicant.employementRec.Employement_Recommendation_Higher_Education}}</div><br><br>
+                </div>
+                <div class="row">
+                    <div class="col-md-3"><strong> Employment Record in Industry or Other Sector</strong></div>
+                    <div class="col-md-9">{{applicant.employementRec.Employement_Recommendation_Industry}}</div><br><br>
+                </div><hr/>
+            </div>
+
+
+            <div id="section">
+                <h3>Teaching and Supervision</h3><br>
+                <div class="row">
+                    <div class="col-md-4"><strong> Courses willing to offer at undergraduate and postgraduate levels </strong></div>
+                    <div class="col-md-8">{{applicant.teachingSupervision.Courses_offering}}</div><br><br>
+                </div>
+                <div class="row">
+                    <div class="col-md-4"><strong> List of supervision at postgraduate level </strong></div>
+                    <div class="col-md-8">{{applicant.teachingSupervision.List_of_supervision}}</div><br><br>
+                </div>
+                    <div class="row">
+                        <div class="col-md-4"><strong> Document List of supervision at postgraduate level </strong></div>
+                        <div class="col-md-8">
+                            <p><embed src="{{applicant.teachingSupervision.Supervision_file}}" type="application/pdf"   height="700px"     width="500"></embed></p>
+                            <a href="{{applicant.teachingSupervision.Supervision_file}}" target="_blank">View Document</a>
+                        </div><br><br>
+                    </div>
+                <hr/>
+
+                <h3>Research and Publication</h3><br>
+                <div class="row">
+                    <div class="col-md-3"><strong> Present research and areas of interest </strong></div>
+                    <div class="col-md-9">{{applicant.teachingSupervision.Area_of_interest}}</div><br><br>
+                </div>
+                    <div class="row">
+                    <div class="col-md-3"><strong> List of Publications and patent </strong></div>
+                        <div class="col-md-8">
+                            <p><embed src="{{applicant.teachingSupervision.Publications_file}}" type="application/pdf"   height="700px"     width="500"></embed></p>
+                            <a href="{{applicant.teachingSupervision.Publications_file}}" target="_blank">View Document</a>
+                        </div><br><br>
+                    </div>';
+                <div class="row">
+                    <div class="col-md-3"><strong> Number of Google Scholar citations and H-index </strong></div>
+                    <div class="col-md-9">{{applicant.teachingSupervision.Google_H_index}}</div><br><br>
+                </div>
+                <div class="row">
+                    <div class="col-md-3"><strong>Number of SCOPUS citations and H-index</strong></div>
+                    <div class="col-md-9">{{applicant.teachingSupervision.Scopus_H_index}}</div><br><br>
+                </div><hr/>
+            </div>
+
+
+            <div id="section">
+                <h3>Languages</h3><br>
+                <div class="row">
+                    <div class="col-md-2"><strong>Malay</strong></div>
+                    <div class="col-md-10">{{applicant.languages.Malay}}</div><br><br>
+                </div>
+                <div class="row">
+                    <div class="col-md-2"><strong>English</strong></div>
+                    <div class="col-md-10">{{applicant.languages.English}}</div><br><br>
+                </div>
+                <div class="row">
+                    <div class="col-md-2"><strong>Arabic</strong></div>
+                    <div class="col-md-10">{{applicant.languages.Arabic}}</div><br><br>
+                </div>
+                <div class="row">
+                    <div class="col-md-2"><strong>Others</strong></div>
+                    <div class="col-md-10">{{applicant.languages.Others}}</div><br><br>
+                </div><hr/>
+
+                <h3>Family Particulars</h3><br>
+                <div class="row">
+                    <div class="col-md-2"><strong>Children</strong></div>
+                    <div class="col-md-10">{{applicant.family.Children}}</div><br><br>
+                </div>
+                <div class="row">
+                    <div class="col-md-2"><strong>Spouse</strong></div>
+                    <div class="col-md-10">{{applicant.family.Spouse}}</div><br><br>
+                </div><hr/>
+            </div>
+
+
+            <div id="section">
+                <h3>Referees</h3><br>
+                <div class="row">
+                    <div class="col-md-2"><strong>Referee 1</strong></div>
+                    <div class="col-md-10">{{applicant.referees.Referee_1}}</div><br><br>
+                </div>
+                <div class="row">
+                    <div class="col-md-2"><strong>Referee 2</strong></div>
+                    <div class="col-md-10">{{applicant.referees.Referee_2}}</div><br><br>
+                </div>
+                <div class="row">
+                    <div class="col-md-2"><strong>Referee 3</strong></div>
+                    <div class="col-md-10">{{applicant.referees.Referee_3}}</div><br><br>
+                </div><hr/>
+            </div>
+
+            
+            <div id="documents">
+                <h3>Documents</h3><br>
+                <div class="row">
+                    <div class="col-md-2"><strong>IC or Passport</strong></div>
+                    <div class="col-md-10">
+                        <p><embed src="{{applicant.documents.IC_Passport_file}}" type="application/pdf"   height="700px"     width="500"></embed></p>
+                        <a href='{{applicant.documents.IC_Passport_file}}'>View document</a>
+                    </div><br><br>
+                </div>
+                <div class="row">
+                    <div class="col-md-2"><strong>CV</strong></div>
+                    <div class="col-md-10">
+                        <p><embed src="{{applicant.documents.CV_file}}" type="application/pdf"   height="700px"     width="500"></embed></p>
+                        <a href='{{applicant.documents.CV_file}}'>View document</a></div><br><br>
+                </div>
+                <div class="row">
+                    <div class="col-md-2"><strong>Transcript</strong></div>
+                    <div class="col-md-10">
+                        <p><embed src="{{applicant.documents.Transcript_file}}" type="application/pdf"   height="700px"     width="500"></embed></p>
+                        <a href='{{applicant.documents.Transcript_file}}'>View document</a></div><br><br>
+                </div>
+                <div class="row">
+                    <div class="col-md-2"><strong>Other Documents</strong></div>
+                    <div class="col-md-10">
+                            <p><embed src="{{applicant.documents.Other_Documents_file}}" type="application/pdf"   height="700px"     width="500"></embed></p>
+                        <a href='{{applicant.documents.Other_Documents_file}}'>View document</a></div><br><br>
+                </div>
+                <hr/>
+                
+            </div>
+            <div id="section">
+                <div class="row">
+                <div style="float: right;">
+                    <a href="{% url 'recommendApplicant' applicant.id %}"><button type="button" class="btn btn-outline-success">Recommend</button></a><br>
+                    <a href="{% url 'notRecommendApplicant' applicant.id %}"><button type="button" class="btn btn-outline-danger" onclick="">Not Recommend</button></a>
+                </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+    </div>
+
+</body>
+</html>

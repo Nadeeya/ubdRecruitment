@@ -1,0 +1,233 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    {% load static %}
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <link href="https://fonts.googleapis.com/css?family=Open+Sans:300,400,700" rel="stylesheet">
+    {% load bootstrap5 %}
+    {% bootstrap_css %}
+    {% bootstrap_javascript %}
+    {% load bootstrap_icons %}
+
+    <!-- Style -->
+    <link rel="stylesheet" href="{% static 'css/viewApplicant.css' %}"/>
+    <link rel="icon" type="image/x-icon" href="{% static 'images/contentDeco/ubd-favicon.ico' %}"> 
+    <link rel="stylesheet" href="{% static 'css/style.css' %}">
+
+    <title>View applicants</title>
+</head>
+<body>
+    {% include 'recruiter/constant/navbar.html' %}
+    <br>
+    
+    <h4 style="text-align: center;">Below are the applicants for all jobs</h4>
+    <br>
+    <div style="width: 90%; margin-left:auto; margin-right: auto;">
+        <div class="d-flex justify-content-center">
+            <div class="card" style="width: 18rem; margin-left: auto; margin-right: auto;">
+                <div class="card-body total" style="text-align: center;">
+                    <h5 class="card-title">Total applicants:</h5>
+                    <p class="card-text">{{totalApplicants}} Applicants</p>
+                </div>
+            </div>
+
+            <div class="card" style="width: 18rem;">
+                <div class="card-body recommended" style="text-align: center;">
+                    <h5 class="card-title">Recommended Applicants:</h5>
+                    <p class="card-text">{{recommended}} applicant</p>
+                </div>
+            </div>
+
+            <div class="card" style="width: 18rem;margin-left: auto; margin-right: auto;">
+                <div class="card-body pending" style="text-align: center;">
+                    <h5 class="card-title">Pending applicants:</h5>
+                    <p class="card-text">{{pending}} applicant</p>
+                </div>
+            </div>
+        </div>
+        <br>
+    </div>
+    <br>
+    <br>
+   <section class="section">
+    <div class="container">
+        <div class="justify-content-center row">
+            <div class="col-lg-20">
+                <div class="candidate-list-widgets mb-4">
+                    <form action="#" class="" method="get">
+                        <div class="g-2 row">
+                            <div class="col-lg-4">
+                                <div class="filler-job-form">
+                                    <i class="uil uil-briefcase-alt"></i><input id="search" name="search" placeholder="Search for applicant's name or qualification" type="search" class="form-control filler-job-input-box form-control" />
+                                </div>
+                            </div>
+                            <div class="col-lg-2">
+                                <div class="filler-job-form">
+                                    <i class="uil uil-location-point"></i>
+                                    <select class="form-select selectForm__inner" data-trigger="true" id="nationality" aria-label="Default select example" name="nationality">
+                                        <option value="" disabled selected>Nationality</option>
+                                        {% for n in nationality %}
+                                            <option value="{{n}}">{{n}}</option>
+                                        {% endfor %}
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="col-lg-3">
+                                <div class="filler-job-form">
+                                    <i class="uil uil-clipboard-notes"></i>
+                                    <select class="form-select selectForm__inner" data-trigger="true" name="jobs" id="jobs" aria-label="Default select example">
+                                        <option value="" selected disabled>Job name</option>
+                                        {% for job in jobs%}
+                                        <option value="{{job.name}}">{{job.name}}</option>
+                                        {% endfor %}
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="col-lg-3">
+                                <div>
+                                    <button class="btn btn-primary" type="submit">Search</button>
+                                </div>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+        {% if applicants %}
+        <div class="row">
+            <div class="col-lg-12">
+                <div class="align-items-center row">
+                    <div class="col-lg-8">
+                        <div class="mb-3 mb-lg-0"><h6 class="fs-16 mb-0">Showing {{count_applicants}} results</h6></div>
+                    </div>
+                    <div class="col-lg-4">
+                        <form method="GET">
+                        <div class="candidate-list-widgets">
+                            <div class="row">
+                                <div class="col-lg-6">
+                                    <div class="selection-widget">
+                                        <select class="form-select" data-trigger="true" name="order" id="order" aria-label="Default select example" onchange="this.form.submit()">
+                                            <option value="" selected>Default</option> 
+                                            <option value="ne">Newest</option>
+                                            <option value="od">Oldest</option>
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="col-lg-6">
+                                    <div class="selection-widget mt-2 mt-lg-0">
+                                        <select class="form-select" data-trigger="true" name="status" id="status" aria-label="Default select example" onchange="this.form.submit()">
+                                            <option value="">All</option>
+                                            <option value="PENDING">Pending</option>
+                                            <option value="RECOMMENDED">Recommended</option>
+                                            <option value="NOT RECOMMENDED">Not recommended</option>
+                                        </select>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        </form>
+                    </div>
+                </div>
+                <div class="candidate-list">
+                    {% for applicant in applicants %}
+                    <div class="candidate-list-box card mt-4">
+                        <div class="p-4 card-body">
+                            <div class="align-items-center row">
+                                <div class="col-auto">
+                                    <div class="candidate-list-images">
+                                    {% if applicant.profile.profilePic == '' %}
+                                            <a href="#"><img src="http://bootdey.com/img/Content/avatar/avatar1.png" alt="" class="avatar-md img-thumbnail rounded-circle" /></a>
+                                        {% else %}
+                                            <a href="#"><img src="/media/{{applicant.profile.profilePic}}" alt="" class="avatar-md img-thumbnail rounded-circle" /></a>
+                                        {% endif %}
+                                    </div>
+                                </div>
+                                <div class="col-lg-3">
+                                    <div class="candidate-list-content mt-3 mt-lg-0">
+                                        <h5 class="fs-19 mb-0">
+                                            <a class="primary-link" href="{% url 'viewApplicantsJob' applicant.job_id %}">{{applicant.job.name}}</a>  
+                                        </h5><br>
+                                        <h5 class="fs-19 mb-0">
+                                            <a class="primary-link" href="#">{{applicant.user.first_name}} {{applicant.user.last_name}}</a>  
+                                        </h5>
+                                        <p class="text-muted mb-2">{% bs_icon 'envelope-at' %}{{applicant.user.email}}</p>
+                                        <ul class="list-inline mb-0 text-muted">
+                                            <li class="list-inline-item">{% bs_icon 'calendar' %}<strong>DOB: </strong> {{applicant.profile.dob}}</li>
+                                            <li class="list-inline-item"><strong>Gender: </strong>{{applicant.profile.gender}}</li>
+                                            <li class="list-inline-item">{% bs_icon 'phone' %}<strong>Phone No: </strong>{{applicant.profile.phoneNo}}</li>
+                                            <li class="list-inline-item"><strong>Nationality: </strong>{{applicant.profile.nationality}}</li>
+                                        </ul><br>
+                                        <p class="text-muted mb-2">Application date: {{applicant.date_added}}</p>
+                                        <br>
+                                        <a href="{% url 'viewApplicantDet' applicant.id %}"><button type="button" class="btn btn-primary">More personal details</button></a>
+
+                                        
+                                    </div>
+                                </div>
+                                <div class="col-lg-3">
+                                    <h6>Downloadable files:</h6>
+                                    <p><a href="{% url 'generatePdf' applicant.id %}">Applicant's Details</a></p>
+                                    <p><a href="{{applicant.teachingSupervision.Supervision_file}}">{{applicant.teachingSupervision.Supervision_file_name}}</a></p>
+                                    <p><a href="{{applicant.teachingSupervision.Publications_file}}">{{applicant.teachingSupervision.Publications_name}}</a></p>
+                                    <!-- <p><a href="{{applicant.teachingSupervision.IC_Passport_file}}">{{applicant.teachingSupervision.IC_Passport_name}}</a></p> -->
+                                    <p><a href="{{applicant.documents.CV_file}}">{{applicant.documents.CV_name}}</a></p>
+                                    <p><a href="{{applicant.documents.Transcript_file}}">{{applicant.documents.Transcript_name}}</a></p>
+                                    <p><a href="{{applicant.documents.Other_Documents_file}}">{{applicant.documents.Other_Documents_name}}</a></p>
+                                </div>
+                                 <div class="col-lg-3">
+                                    <h6><strong>Qualifications:</strong></h6>
+                                     <p>Highest Education Qualification: {{applicant.profile.highQual}}</p>
+                                    <p>No. years of experience in the relevant field: {{applicant.profile.yearsExp}}</p>
+                                    <a href="{% url 'recommendApplicant' applicant.id %}"><button type="button" class="btn btn-outline-success">Recommend</button></a><br><br>
+                                    <a href="{% url 'notRecommendApplicant' applicant.id %}"><button type="button" class="btn btn-outline-danger" onclick="">Not Recommend</button></a>
+                                </div>
+                                
+                            </div>
+                            <div class="favorite-icon">
+                                {% if applicant.applicant_status == 'RECOMMENDED' %}
+                                    <span class="badge bg-success ms-1">{{applicant.applicant_status}}</span>
+                                {% elif applicant.applicant_status == 'NOT RECOMMENDED' %}
+                                    <span class="badge bg-danger ms-1">{{applicant.applicant_status}}</span>
+                                {% elif applicant.applicant_status == 'PENDING' %}
+                                    <span class="badge bg-secondary ms-1">{{applicant.applicant_status}}</span>
+                                {% endif %}
+                            </div>
+                        </div>
+                    </div>
+                    {% endfor %}
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="mt-4 pt-2 col-lg-12">
+                <nav aria-label="Page navigation example">
+                    <div class="pagination job-pagination mb-0 justify-content-center">
+                        <li class="page-item disabled">
+                            <a class="page-link" tabindex="-1" href="#"><i class="mdi mdi-chevron-double-left fs-15"></i></a>
+                        </li>
+                        <li class="page-item active"><a class="page-link" href="#">1</a></li>
+                        <li class="page-item"><a class="page-link" href="#">2</a></li>
+                        <li class="page-item"><a class="page-link" href="#">3</a></li>
+                        <li class="page-item"><a class="page-link" href="#">4</a></li>
+                        <li class="page-item">
+                            <a class="page-link" href="#"><i class="mdi mdi-chevron-double-right fs-15"></i></a>
+                        </li>
+                    </div>
+                </nav>
+            </div>
+        </div>
+    </div>
+</section>
+        
+
+    {% else %}
+    <p>There is no applicants</p>
+    {% endif %}    
+
+    <br>
+    <br>
+    <br>
+ {% include 'main/constant/footer.html' %}
+</body>
+</html>

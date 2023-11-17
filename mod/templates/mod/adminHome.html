@@ -1,0 +1,108 @@
+<!doctype html>
+{% load static %}
+<html lang="en">
+  <head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <link href="https://fonts.googleapis.com/css?family=Open+Sans:300,400,700" rel="stylesheet">
+    {% load bootstrap5 %}
+    {% bootstrap_css %}
+    {% bootstrap_javascript %}
+    <!-- Style -->
+    <link rel="icon" type="image/x-icon" href="{% static 'images/contentDeco/ubd-favicon.ico' %}"> 
+    
+    <title>Moderator Page</title>
+    <style>
+      @import url('https://fonts.googleapis.com/css?family=Poppins|Ubuntu&display=swap');
+      *{box-sizing: border-box;margin: 0;padding: 0}
+      body{background: #ffffff;font-family: 'Ubuntu',sans-serif}
+      .box{position: relative;width: 100%;padding-right: 15px;padding-left: 15px}
+      .our-services{margin-top: 75px;padding-bottom: 30px;padding: 0 60px;min-height: 198px;text-align: center;border-radius: 10px;background-color: #fff;transition: all .4s ease-in-out;box-shadow: 0 0 25px 0 rgba(20,27,202,.17)}
+      .our-services .icon{margin-bottom: -21px;transform: translateY(-50%);text-align: center}
+      .our-services:hover h4, 
+      .our-services:hover 
+      p{color: #fff}
+      .speedup:hover{box-shadow: 0 0 25px 0 rgba(20,27,201,.05);cursor: pointer;background-image: linear-gradient(-45deg, #fb0054 0%, #f55b2a 100%)}
+      .settings:hover{box-shadow: 0 0 25px 0 rgba(20,27,201,.05);cursor: pointer;background-image: linear-gradient(-45deg, #34b5bf 0%, #210c59 100%)}
+      .privacy:hover{box-shadow: 0 0 25px 0 rgba(20,27,201,.05);cursor: pointer;background-image: linear-gradient(-45deg, #3615e7 0%, #44a2f6 100%)}
+
+      .footer {
+        position: relative;
+        left: 0;
+        bottom: 0;
+        background-color: #273746;
+        color: white;
+        font-size: 15px;
+        width: 100%;
+        padding: 60px 0 10px;
+    }
+
+    .footer li {
+        padding: 4px 0;
+    }
+
+    .footer a {
+        color: white;
+        text-decoration:none;
+    }
+
+    .footer a:hover {
+        opacity: 0.5;
+    }
+    </style>
+  </head>
+  <body>
+    {% include 'mod/constant/navbar.html' %}
+    <div class="container px-4 py-5" id="featured-3">
+    <h2 class="pb-2 border-bottom">Welcome Moderator</h2>
+    <p>Below are services that you can manage</p>
+    <div class="container-fluid mb-5">
+
+    <div class="row">
+        <div class="col-md-4">
+            <div class="box"  onclick="window.location.href = '{% url "manageJobs" %}'">
+                <div class="our-services settings">
+                    <div class="icon"> <img src="{% static 'images/job.png' %}" style="height: 90px;"> </div>
+                    <h4>Job openings</h4>
+                    <p>Currently there are {{totalJobs}} job openings</p>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-4" onclick="window.location.href = '{% url "manageRecruiters" %}'">
+            <div class="box">
+                <div class="our-services speedup">
+                    <div class="icon"> <img src="{% static 'images/recruiter.png' %}" style="height: 90px;"> </div>
+                    <h4>Recruiters</h4>
+                    <p>Currently there are {{totalRecruiters}} recruiters</p>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="box">
+                <div class="our-services privacy">
+                    <div class="icon"> <img src="{% static 'images/user.png' %}" style="height: 90px;"> </div>
+                    <h4>Applicants</h4>
+                    <p>Currently there are {{totalApplicants}} applicants</p>
+                </div>
+            </div>
+        </div>
+    </div>
+   
+  </div>
+    </div>
+
+     {% if message %}
+		<script>
+			alert('{{message}}')
+		</script>
+	{% endif %}
+
+   <div style="margin-top: 300px;">
+      {% include 'main/constant/footer.html' %}
+    </div>
+
+
+  
+</body>
+</html>

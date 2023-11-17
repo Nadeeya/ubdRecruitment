@@ -1,0 +1,558 @@
+<!DOCTYPE html>
+{% load static %}
+{% load countries %}
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link href="https://fonts.googleapis.com/css?family=Roboto" rel="stylesheet"/>
+   {% load bootstrap5 %}
+   {% bootstrap_css %}
+   {% bootstrap_javascript %}
+    <link rel="stylesheet" href="{% static 'css/style.css' %}"> 
+
+
+    <link rel="icon" type="image/x-icon" href="{% static 'images/contentDeco/ubd-favicon.ico' %}"> 
+  <title>Job Application Form | Academic</title>
+</head>
+
+<body style="background: #f0f2f5;">
+    {% include 'main/constant/header.html' %}
+  <div class="container">
+    <div class="formbox">
+      <form id="regForm" role="form" action="" method="POST" enctype="multipart/form-data">
+        <h1>Application Form for<br>{{job.name}}</h1>
+
+        <!-- Circles which indicates the steps of the form: -->
+        <div style="text-align: center; margin-top: 40px">
+            {% for i in n %}
+                <span class="step"></span>
+            {% endfor %}
+        </div><br><br>
+
+        <!-- INTRO -->
+        <div class="tab">
+          <div class="form-group">
+              <p>
+                Please be informed that the application form are divided into the following categories:-
+                <ol>
+                  <li>Personal particulars</li>
+                  <li>Present employment</li>
+                  <li>Academic record</li>
+                  <li>Membership and fellowship</li>
+                  <li>Employment record</li>
+                  <li>Teaching and supervision</li>
+                  <li>Research and publication</li>
+                  <li>Languages</li>
+                  <li>Family particulars</li>
+                  <li>Referees</li>
+                </ol>
+                You are also required to upload the following documents:-
+                <ul>
+                  <li>Copy of your Passport or Identity Card</li>
+                  <li>Curriculum Vitae</li>
+                  <li>Academic transcripts and certificate</li>
+                  <li>Other relevant documents to support your applications (example: covering letter, teaching evaluation feedback and research impact)</li>
+                </ul>
+              </p>
+          </div>
+          <br><hr/><br>
+
+          <div class="form-group">
+            {% csrf_token %}
+              <label for="email">Email</label>
+              <input  type="email" name="email" id="email" value="{{user.email}}" class="form-control" readonly>
+          </div><br>
+
+          <div class="form-group">
+              <label for="area">Area of Specialisation applied for</label>
+              <input  type="text" name="area" id="area" value="{{job.name}}" style="width:60%;" class="form-control" readonly>
+          </div><br>
+
+
+          <div class="form-group">
+              <label for="post_applied">Post applied for</label>
+              
+                <select name="post_applied" id="post_applied" class="form-control">
+                    <option value="">- - -</option>
+                    <option value="Lecturer">Professor</option>
+                    <option value="Associate Professor">Associate Professor</option>
+                    <option value="Assistant Professor">Assistant Professor</option>
+                    <option value="Lecturer">Lecturer</option>
+                    
+                </select>
+          </div><br>
+
+          <div class="form-group">
+              <label for="date_prev">Date of any previous application</label> <br />
+              <input type="date" id="date_prev" name="date_prev" class="form-control"/>
+          </div><br>
+
+          <div class="form-group">
+              <label for="source">Please indicate the source or information obtained regarding the vacant post</label> <br />
+              <select name="source" id="source" class="form-control">
+                  <option value="">- - -</option>
+                  <option value="UBD website">UBD website</option>
+                  <option value="Jobs.ac.uk">Jobs.ac.uk</option>
+                  <option value="Pelita Brunei">Pelita Brunei</option>
+                  <option value="Other">Other</option>
+              </select>
+          </div><br>
+        </div>
+
+        <!-- PERSONAL -->
+        <div class="tab">
+          <h3>1. Personal</h3><br/>
+
+          <div class="form-group">
+            <label for="fullname">Full Name</label>
+            <input style="width:100%;" type="text" name="fullname" id="fullname" class="form-control" value ="{{user.first_name}} {{user.last_name}}"/>
+          </div><br>
+
+          <div class="form-group">
+              <label for="gender">Gender</label>
+              <select name="gender" id="gender" class="form-control">
+                  {% for g in gender %}
+                    {% if profile.gender == g %}
+                        <option value="{{g}}" selected>{{g}}</option>
+                    {% else %}
+                        <option value="{{g}}" >{{g}}</option>
+                    {% endif %}
+                {% endfor %}
+                </select>
+
+          </div><br>
+
+          <div class="form-group">
+              <label for="dob">Date of Birth</label> <br />
+              <input type="date" id="dob" name="dob" class="form-control" value='{{profile.dob| date:"Y-m-d"}}'/>
+          </div><br>
+
+          <div class="form-group">
+              <label for="pob">Place of Birth</label>
+              <select name="pob" id="pob" class="form-control">
+                {% get_countries as countries %}
+                {% for country in countries%}
+                    {% if profile.pob == country.name %}
+                        <option value="{{country.name}}" selected>{{country.name}} </option>
+                    {% else %}
+                        <option value="{{country.name}}">{{country.name}}</option>
+                    {% endif %}
+                {% endfor %}
+              </select>
+          </div><br>
+
+          <div class="form-group">
+              <label for="nationality">Nationality</label>
+              <select name="nationality" id="nationality" class="form-control">
+                <option value="">- - -</option>
+                 {% for nationality in nationalities%}
+                    {% if profile.nationality == nationality %}
+                        <option value="{{nationality}}" selected>{{nationality}}</option>
+                    {% else %}
+                        <option value="{{nationality}}">{{nationality}}</option>
+                    {% endif %}
+                {% endfor %}
+              </select>
+          </div><br>
+
+          <div class="form-group">
+              <label for="citizenship">Citizenship</label>
+              <select name="citizenship" id="citizenship" class="form-control">
+                <option value="">- - -</option>
+                {% for nationality in nationalities%}
+                    {% if profile.citizenship == nationality %}
+                        <option value="{{nationality}}" selected>{{nationality}}</option>
+                    {% else %}
+                        <option value="{{nationality}}">{{nationality}}</option>
+                    {% endif %}
+                {% endfor %}
+              </select>
+          </div><br>
+
+          <div class="form-group">
+              <label for="cod">Country of Domicile</label>
+              <select name="cod" id="cod" class="form-control">
+                <option value="">- - -</option>
+                {% get_countries as countries %}
+                {% for country in countries%}
+                    {% if profile.cod == country.name %}
+                        <option value="{{country.name}}" selected>{{country.name}} </option>
+                    {% else %}
+                        <option value="{{country.name}}">{{country.name}}</option>
+                    {% endif %}
+                {% endfor %}
+              </select>
+          </div><br>
+
+          <div class="form-group">
+              <label for="marital">Marital Status</label>
+              <select name="marital" id="marital" class="form-control">
+                {% for m in maritalStat %}
+                    {% if profile.maritalStat == m %}    
+                        <option value="{{m}}" selected>{{m}}</option>
+                    {% else %}
+                        <option value="{{m}}" >{{m}}</option>
+                    {% endif %}
+                {% endfor %}
+              </select>
+          </div><br>
+          
+          <div class="form-group">
+              <label for="religion">Religion</label>
+              <input type="text" name="religion" id="religion" class="form-control" value="{{profile.religion}}" />
+          </div><br>
+
+          <div class="form-group">
+              <label for="ic_passport">IC Number / Passport Number</label>
+              <p style="font-size: 14px;">* For local applicants, please state your IC Number</p>
+              <input type="text" name="ic_passport" id="ic_passport" class="form-control" value="{{profile.icPass}}"/>
+          </div><br>
+
+          <div class="form-group">
+              <label for="address">Address of correspondence</label>
+              <input style="width:100%;" type="text" name="address" id="address" class="form-control " value="{{profile.address}}" />
+          </div><br>
+
+          <div class="form-group">
+              <label for="tel">Phone Number (mobile)</label>
+              <input type="text" name="tel" id="tel" class="form-control" value="{{profile.code}} {{profile.phoneNo}}"/>
+          </div><br>
+        </div>
+
+
+
+        <!-- PRESENT EMPLOYMENT -->
+        <div class="tab">
+          <h3>2. Present Employment</h3><br/>
+
+          <div class="form-group">
+              <label for="present_post">Present post</label>
+              <input style="width:100%;" type="text" name="present_post" id="present_post" class="form-control" />
+          </div><br>
+
+          <div class="form-group">
+              <label for="present_employer">Present employer</label>
+              <input style="width:100%;" type="text" name="present_employer" id="present_employer" class="form-control" />
+          </div><br>
+
+          <div class="form-group">
+              <label for="current_duties">Current duties</label>
+              <input style="width:100%;" type="text" name="current_duties" id="current_duties" class="form-control" />
+          </div><br>
+
+          <div class="form-group">
+              <label for="current_post_appointment">Date of appointment in current post</label>
+              <input type="date" name="current_post_appointment" id="current_post_appointment" class="form-control" />
+          </div><br>
+
+          <div class="form-group">
+              <label for="basic_salary">Basic Salary (currency depending on your current employment)</label>
+              <input type="text" name="basic_salary" id="basic_salary" class="form-control" />
+          </div><br>
+
+          <div class="form-group">
+              <label for="other_emoluments_allowance">Other Emoluments and Allowance</label>
+              <input type="text" name="other_emoluments_allowance" id="other_emoluments_allowance" class="form-control" />
+          </div><br>
+
+          <div class="form-group">
+              <label for="income_tax_deduction">Income Tax Deduction (%)</label>
+              <input type="text" name="income_tax_deduction" id="income_tax_deduction" class="form-control" />
+          </div><br>
+
+          <div class="form-group">
+              <label for="period_of_notice">Period of Notice before Reporting for Duty in Brunei</label>
+              <input type="text" name="period_of_notice" id="period_of_notice" class="form-control" />
+          </div><br>
+        </div>
+
+
+        <!-- ACADEMIC RECORD -->
+        <div class="tab">
+          <h3>3. Academic Record</h3><br/>
+
+          <div class="form-group">
+              <p>
+              Please state the name of the degree as stated in your certificate (subject), institution attended, country, date of award and grades in this order, PhD, Masters, Bachelor Degree.
+              For example :
+                <ul>
+                  <li>Doctor of Philosophy (Finance), Universiti Brunei Darussalam, Brunei Darussalam. 2021</li>
+                  <li>Master of Business Administration, Universiti Brunei Darussalam, Brunei Darussalam, 2018, Distinction</li>
+                  <li>Bachelor of Business Administration (Finance), Universiti Brunei Darussalam, Brunei Darussalam, 2016, First Class Honour</li>
+                </ul>
+              </p><br>
+              <label for="academic_rec">Please list out your academic qualifications</label>
+              <textarea name="academic_rec" id="academic_rec" class="form-control"></textarea>
+           
+              
+          </div><br>
+        </div>
+
+
+        <!-- MEMBERSHIP & FELLOWSHIP -->
+        <div class="tab">
+          <h3>4. Membership and Fellowship</h3><br/>
+          <div class="form-group">
+              <label for="membership_fellowship">Please list out your Membership or Fellowship of Learned and Professional Societies</label>
+              <textarea name="membership_fellowship" id="membership_fellowship" class="form-control"></textarea>
+          </div><br>
+        </div>
+
+
+        <!-- EMPLOYMENT RECORD -->
+        <div class="tab">
+          <h3>5. Employment Record</h3><br/>
+
+          <p>Please state the positions held, names and dates of previous Institutions / Employers with brief detail of responsibilities in chronological order.<br>
+            For example : Assistant Professor, Universiti Brunei Darussalam, Brunei, June 2018 - June 2020
+          </p><br>
+          <div class="form-group">
+              <label for="employment_rec_higher_ed">Employment Record in Higher Education</label>
+              <textarea name="employment_rec_higher_ed" id="employment_rec_higher_ed" class="form-control"></textarea>
+          </div><br>
+
+          <div class="form-group">
+              <label for="employment_rec_industry">Employment Record in Industry or other sector</label>
+              <textarea name="employment_rec_industry" id="employment_rec_industry" class="form-control"></textarea>
+          </div><br>
+        </div>
+
+
+        <!-- TEACHING & SUPERVISION -->
+        <div class="tab">
+          <h3>6. Teaching and Supervision</h3><br/>
+
+          <div class="form-group">
+              <label for="courses_offering">Indicate courses which you can teach and others which you are willing to offer at undergraduate and postgraduate levels.</label>
+              <textarea name="courses_offering" id="courses_offering" class="form-control"></textarea>
+          </div><br>
+
+          <div class="form-group">
+              <label for="list_supervision">Please provide a list of supervision at postgraduate level (Masters degree and PhD students).</label>
+              <textarea name="list_supervision" id="list_supervision" class="form-control"></textarea>
+          </div><br>
+
+          <div class="mb-3">
+              <label>Please attach the list of supervision at postgraduate level (if necessary)</label>
+              <input type="file" class="form-control" name="list_supervision_file" id="list_supervision_file">
+          </div>
+        </div>
+
+
+
+        <!-- RESEARCH & PUBLICATION -->
+        <div class="tab">
+          <h3>7. Research and Publication</h3><br/>
+
+          <div class="form-group">
+              <label for="area_interest">Please indicate your present research and areas of interest</label>
+              <input style="width:100%;" type="text" name="area_interest" id="area_interest" class="form-control" />
+          </div><br>
+
+          <div class="mb-3">
+              <label>Please attach list of Publications (Book and Monograph, International Journals, other Scholarly Publications) and patent in chronological order</label>
+              <input type="file" class="form-control" name="publications" id="publications">
+          </div><br>
+
+          <div class="form-group">
+              <label for="google_h_index">Please state the number of your Google Scholar citations and H-index</label>
+              <input type="text" name="google_h_index" id="google_h_index" class="form-control" />
+          </div><br>
+
+          <div class="form-group">
+              <label for="scopus_h_index">Please state the number of your SCOPUS citations and H-index</label>
+              <input type="text" name="scopus_h_index" id="scopus_h_index" class="form-control" />
+          </div><br>
+        </div>
+
+
+        <!-- LANGUAGES -->
+        <div class="tab">
+          <h3>8. Languages</h3><br/>
+
+          <h5>Spoken Ability</h5><br>
+          <div class="form-group">
+              <label for="Malay">Malay</label>
+              <select name="Malay" id="Malay" class="form-control">
+                  <option value="">- - -</option>
+                  <option value="Fluent">Fluent</option>
+                  <option value="Good">Good</option>
+                  <option value="Fair">Fair</option>
+              </select>
+          </div><br>
+
+          <div class="form-group">
+              <label for="English">English</label>
+              <select name="English" id="English" class="form-control">
+                  <option value="">- - -</option>
+                  <option value="Fluent">Fluent</option>
+                  <option value="Good">Good</option>
+                  <option value="Fair">Fair</option>
+              </select>
+          </div><br>
+
+          <div class="form-group">
+              <label for="Arabic">Arabic</label>
+              <select name="Arabic" id="Arabic" class="form-control">
+                  <option value="">- - -</option>
+                  <option value="Fluent">Fluent</option>
+                  <option value="Good">Good</option>
+                  <option value="Fair">Fair</option>
+              </select>
+          </div><br>
+
+          <div class="form-group">
+              <label for="Others">Others</label>
+              <select name="Others" id="Others" class="form-control">
+                <option value="">- - -</option>
+                  <option value="Fluent">Fluent</option>
+                  <option value="Good">Good</option>
+                  <option value="Fair">Fair</option>
+              </select>
+          </div><br>
+        </div>
+
+
+        <!-- FAMILY PARTICULARS -->
+        <div class="tab">
+          <h3>9. Family Particulars</h3><br/>
+
+          <div class="form-group">
+              <label for="children">Please state your children’s name, date of birth and gender</label>
+              <textarea name="children" id="children" class="form-control"></textarea>
+          </div><br>
+
+          <div class="form-group">
+              <label for="spouse">Please state your spouse’s name and current occupation</label>
+              <textarea name="spouse" id="spouse" class="form-control"></textarea>
+          </div><br>
+        </div>
+
+
+        <!-- REFEREES -->
+        <div class="tab">
+          <h3>10. Referees</h3><br/>
+
+          <p>Give details of three referees including position, telephone number, and email address, 
+            stating whether they can be contacted at this stage.</p><br>
+          <div class="form-group">
+              <label for="referee_1">Referee 1</label>
+              <textarea name="referee_1" id="referee_1" class="form-control"></textarea>
+          </div><br>
+          
+          <div class="form-group">
+              <label for="referee_2">Referee 2</label>
+              <textarea name="referee_2" id="referee_2" class="form-control"></textarea>
+          </div><br>
+
+          <div class="form-group">
+              <label for="referee_3">Referee 3</label>
+              <textarea name="referee_3" id="referee_3" class="form-control"></textarea>
+          </div><br>
+        </div>
+
+
+        <!-- DOCUMENTS REQUIRED -->
+        <div class="tab">
+          <h3>Documents Required</h3>
+          <p>Please upload coloured version. This information will be kept confidential. 
+            Applicants can upload attachments such as documents, PDFs and images. Incomplete applications will not be processed.</p>
+          <br>
+          
+          <div class="mb-3">
+              <label><h5>Copy of Identity Card / Copy Of Passport</h5></label>
+              <input type="file" class="form-control" name="passport_ic" id="passport_ic">
+          </div><br>
+
+          <div class="mb-3">
+              <label><h5>Curriculum Vitae</h5></label>
+              <input type="file" class="form-control" name="CV" id="CV">
+          </div><br>
+
+          <div class="mb-3">
+              <label><h5>Academic Transcripts and Certificates</h5></label>
+              <p style="font-size: 15px;">For Bachelors and Masters degree, you are required to provide both transcripts and certificates.</p>
+              <input type="file" class="form-control" name="transcripts" id="transcripts">
+          </div><br>
+
+          <div class="mb-3">
+            <label><h5>Other relevant documents to support your applications</h5></label>
+            <p style="font-size: 15px;">Example: Covering letter, teaching evaluation, research impact.</p>
+            <input type="file" class="form-control" name="other_docs" id="other_docs">
+          </div><br>
+
+        </div>
+
+
+        <!-- DECLARATION -->
+        <div class="tab">
+          <h3>Declaration</h3><br/>
+          <h5>
+              I declare that the particulars on this application and the attached sheets
+              hereto are true to the best of my knowledge and belief, and that I have not
+              willfully withheld any material fact.
+          </h5><br>
+        </div>
+
+        <div style="display: flex; align-items: right; justify-content: right;">
+          <div>
+            <button type="button" id="prevBtn" onclick="nextPrev(-1)">Previous</button>
+            <button type="button" id="nextBtn" onclick="nextPrev(1)">Next</button>
+            <button type="submit" id="submitBtn" name="apply-job">Submit Form</button>
+          </div>
+        </div>
+        
+      </form>
+    </div>
+  </div>
+
+ {% include 'main/constant/footer.html' %}
+
+  <script>
+    var currentTab = 0; // Current tab is set to be the first tab (0)
+    showTab(currentTab); // Display the current tab
+
+    function showTab(n) {  // This function will display the specified tab of the form...
+      var x = document.getElementsByClassName("tab");
+      x[n].style.display = "block";
+
+      if (n == 0) {
+        document.getElementById("prevBtn").style.display = "none";
+        document.getElementById("nextBtn").style.display = "inline";
+        document.getElementById("submitBtn").style.display = "none";
+      } else if (n == x.length - 1) {
+        document.getElementById("nextBtn").style.display = "none";
+        document.getElementById("submitBtn").style.display = "inline";
+      } else {
+        document.getElementById("prevBtn").style.display = "inline";
+        document.getElementById("nextBtn").style.display = "inline";
+        document.getElementById("submitBtn").style.display = "none";
+      }
+
+      fixStepIndicator(n);  //... and run a function that will display the correct step indicator:
+    }
+
+    function nextPrev(n) {
+      // This function will figure out which tab to display
+      var x = document.getElementsByClassName("tab");
+      //if (n == 1 && !validateForm()) { return false; } // Exit the function if any field in the current tab is invalid:
+      x[currentTab].style.display = "none";  // Hide the current tab:
+      currentTab = currentTab + n;  // Increase or decrease the current tab by 1:
+      showTab(currentTab);
+    }
+
+    function fixStepIndicator(n) {
+      // This function removes the "active" class of all steps...
+      var i,
+        x = document.getElementsByClassName("step");
+      for (i = 0; i < x.length; i++) {
+        x[i].className = x[i].className.replace(" active", "");
+      }
+      //... and adds the "active" class on the current step:
+      x[n].className += " active";
+    }
+  </script>
+</body>
+</html>

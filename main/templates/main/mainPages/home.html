@@ -1,0 +1,172 @@
+<!DOCTYPE html>
+{% load static %}
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    {% load bootstrap5 %}
+    {% bootstrap_css %}
+    {% bootstrap_javascript %}
+    
+    <link rel="stylesheet" href="{% static 'css/style1.css' %}"> 
+    <!--<link rel="stylesheet" href="{% static 'css/reset.css' %}"> -->
+    <link rel="stylesheet" href="{% static 'css/style.css' %}"> 
+    <script src="{% static 'js/modernizr.js' %}"></script>
+    <link rel="icon" type="image/x-icon" href="{% static 'images/contentDeco/ubd-favicon.ico' %}"> 
+    <title>Career Opportunities - Universiti Brunei Darussalam</title>
+</head>
+<body>
+    {% include 'main/constant/header.html' %}
+    {% include 'main/mainPages/ubdnav.html' %}
+    <div class="career-bg" style="background-image: url({% static '/images/contentDeco/ubd-career-bg.jpg' %});">
+        <div class="container" >
+            <h1 style="padding-top:180px; color: white;">Career Opportunities</h1>
+        </div>
+    </div>
+    <main class="cd-main-content">
+
+		<section class="cd-gallery" style="background-color: rgb(241, 241, 241);">
+			<div class="row">
+                <div class="rowcontent">
+                    <div>
+                        <h1 style="text-align: center;"><strong>Available jobs:</strong></h1> <!--in need of fixing-->
+                        <p style="text-align: center;">There are {{job_count}} available jobs.</p>
+                        <br>
+                    </div>
+                    {% for job in jobs %}
+                        <div class="joblists">
+                            <div class="row">
+                                <div>
+									{% for key , value in elapsedTime.items %}
+										{% if key == job.id %}
+											<span class="badge ms-1" style="float: right; margin-top: 20px; margin-right: 10px; background-color: #F0741E ;">{{value}}</span>
+										{% endif %}
+                                    {% endfor %}
+									<h1 style="padding:30px 0 0 0; margin-left: 30px;color: blue;"><strong>{{job.name}}</strong></h1>
+									<p style="margin-left: 35px;">{{job.department}}</p>
+									
+                                </div>
+                                <div class="col" style="padding:10px 40px">
+                                    <!-- <p class="card-title"><strong>Department: </strong>{{job.department}}</p> -->
+                                    <p class="card-text"><strong>Category: </strong>{{job.category}}</p>
+                                    <p class="card-title"><strong>Employement Type: </strong>{{job.type}}</p>
+                                    <p class="card-title"><strong>Status: </strong>{{job.status}}</p>
+                                    <p class="card-title"><strong>Contract Duration: </strong>{{job.contractDur}}</p>
+                                </div>
+                                <div class="col" style="padding:10px 40px">
+                                    <p class="card-title"><strong>Salary: </strong>{{job.salaryMin}} ~ {{job.salaryMax}} BND per annum</p>
+                                    <p class="card-title"><strong>Minimum Requirement: </strong>{{job.minReq}}</p>
+                                    <p class="card-title"><strong>Years of Experience needed: </strong>{{job.yearsExp}}</p>
+                                    <p class="card-title"><strong>Closing Date: </strong>{{job.dateClose}}</p>
+                                </div>
+                                <div class="readmore">
+                                    <a href="{% url 'jobDetails' job.id %}">+ Read More</a>
+                                </div>
+                            </div>
+                        </div>
+                    {% endfor %}
+                </div>
+                
+            </div>
+			<div class="cd-fail-message">No results found</div>
+		</section> <!-- cd-gallery -->
+		
+
+		<div class="cd-filter">
+			<form method="GET" action="{% url 'home' %}">
+				<div class="cd-filter-block">
+					<h4>Search keywords</h4>
+					
+					<div class="cd-filter-content">
+						<input type="search" placeholder="Try job names or departments" name="search">
+					</div> <!-- cd-filter-content -->
+				</div> <!-- cd-filter-block -->
+
+                <div class="cd-filter-block">
+					<h4>Organisational Unit / Faculty</h4>
+					
+					<div class="cd-filter-content">
+						<div class="cd-select cd-filters">
+							<select class="filter" name="department" id="selectThis">
+								<option value=''>-- Select Department --</option>
+								{% for d in  department %}
+									<option value="{{d}}">{{d}}</option>
+								{% endfor %}
+							</select>
+						</div> 
+					</div> 
+				</div> 
+
+				<div class="cd-filter-block">
+					<h4>Category</h4>
+					
+					<div class="cd-filter-content">
+						<div class="cd-select cd-filters">
+							<select class="filter" name="category" id="selectThis">
+								<option value=''>-- Select Category --</option>
+								{% for c in category %}
+									<option value="{{c}}">{{c}}</option>
+								{% endfor %}
+								
+							</select>
+						</div> 
+					</div> 
+				</div> 
+
+				<div class="cd-filter-block">
+					<h4>Minimum Requirement</h4>
+					
+					<div class="cd-filter-content">
+						<div class="cd-select cd-filters">
+							<select class="filter" name="minReq" id="selectThis">
+								<option value=''>-- Select Minimum Requirement --</option>
+								{% for m in minReq %}
+									<option value="{{m}}">{{m}}</option>
+								{% endfor %}
+							</select>
+						</div> 
+					</div> 
+				</div> 
+
+				<div class="cd-filter-block">
+					<h4>Sort according to</h4>
+					
+					<div class="cd-filter-content">
+						<div class="cd-select cd-filters">
+							<select class="filter" name="uploadDate" id="uploadDate">
+								<option value=''>Default</option>
+								<option value="latest">Latest</option>
+								<option value="earliest">Earliest</option>
+							</select>
+						</div> 
+					</div> 
+				</div>
+				
+                <button type="submit" class="btn btn-primary btn-lg">Submit</button>
+			</form>
+
+			<a href="#0" class="cd-close">Close</a>
+		</div>
+
+		<a href="#0" class="cd-filter-trigger">Filters</a>
+	</main>
+	
+
+    {% include 'main/constant/footer.html' %}
+    <script src="{% static 'js/jquery-2.1.1.js'  %}"></script>
+    <script src="{% static 'js/jquery.mixitup.min.js' %}"></script>
+    <script src="{% static 'js/main.js' %}"></script> <!-- Resource jQuery -->
+
+	 {% if messages %}
+	 	{% for message in messages %}
+		<script>
+			alert('{{message}}')
+		</script>
+		{% endfor %}
+	{% endif %}
+
+
+
+</body>
+</html>

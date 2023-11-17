@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    {% load static %}
+    {% include 'mod/constant/meta.html' %}
+    <link rel="stylesheet" href="{% static 'css/style.css' %}">
+
+    <title>Manage Recruiters</title>
+</head>
+<body>
+    {% include 'mod/constant/navbar.html' %}
+    <br>
+    <div style="width: 80%; margin-left:auto; margin-right: auto;">
+    <h3 class="display-7 fw-bold">Manage Recuiters</h3><hr>
+      <p class="lead">Below are the list of recuiters</p>
+      <div class="d-grid gap-2 d-sm-flex justify-content-start">
+        <a href="{% url 'addRecruiter' %}"><button type="button" class="btn btn-primary">Add Recruiter</button></a>
+      </div>
+    </div>
+  <br>
+   <div class="d-flex flex-column gap-4" style="float: inline-end; margin-right: 5%; width: 60%;">
+      <form class="d-flex" method="GET">
+          <input class="form-control me-1" type="search" placeholder="Search for recruiter's name or email" aria-label="Search" name="search">
+          <button class="btn btn-primary" type="submit">Search</button>
+      </form>
+  </div><br><br><br>
+
+  <section class="section">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-12">
+                    <div class="align-items-center row">
+                        <div class="col-lg-8">
+                            <div class="mb-3 mb-lg-0"><h6 class="fs-16 mb-0">Showing {{result}} results</h6></div>
+                        </div>
+                    <div class="col-lg-4">
+                            <form method="GET">
+                            <div class="candidate-list-widgets">
+                                <div class="row">
+                                <div class="d-flex justify-content-end">
+                                    <div class="col-lg-6" style="padding-right: 20px;">
+                                        <div class="selection-widget mt-2 mt-lg-0">
+                                            <select class="form-select" data-trigger="true" name="category" id="category" aria-label="Default select example" onchange="this.form.submit()">
+                                                <option value="">Category</option>
+                                                {% for c in category %}
+                                                  <option value="{{c}}">{{c}}</option>
+                                                {% endfor %}
+                                            </select>
+                                        </div>
+                                    </div>
+                                    <div class="col-lg-6">
+                                        <div class="selection-widget mt-2 mt-lg-0">
+                                            <select class="form-select" data-trigger="true" name="department" id="department" aria-label="Default select example" onchange="this.form.submit()">
+                                                <option value="">Department</option>
+                                                {% for d in department %}
+                                                  <option value="{{d}}">{{d}}</option>
+                                                {% endfor %}
+                                            </select>
+                                        </div>
+                                    </div>
+                                    </div>
+                                </div>
+                            </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+                </div>
+        </div>
+        <br>
+
+
+
+
+  {% if recuiter.count == 0 %}
+    <p>There is no recruiters</p>
+  {% else %}
+    <table class="table table-hover" style="width: 80%; margin-left:auto; margin-right: auto;">
+        <thead>
+            <th scope="col">ID</th>
+            <th scope="col">FULL NAME</th>
+            <th scope="col">EMAIL</th>
+            <th scope="col">CATEGORY</th>
+            <th scope="col">DEPARTMENT</th>
+            <th scope="col">Edit/Delete</th>
+        </thead>
+        <tbody>
+            {% for rec in recruiter %}
+            <tr>
+                <td>{{rec.user.id}}</td>
+                <td>{{rec.user.first_name}} {{rec.user.last_name}}</td>
+                <td>{{rec.user.email}}</td>
+                <td>{{rec.category}}</td>
+                <td>{{rec.department}}</td>
+                <td>
+                  <a href="{% url 'deleteRecruiter' rec.user_id %}"><button type="button" class="btn btn-danger">Delete Recruiter</button></a><br><br>
+                    <a href="{% url 'editRecruiter' rec.user_id %}"><button type="button" class="btn btn-success">Edit Recruiter</button></a>
+                </td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+      </section>
+    {% endif %}
+
+    <div style="margin-top: 300px;">
+      {% include 'main/constant/footer.html' %}
+    </div>
+ 
+  
+</body>
+</html>
